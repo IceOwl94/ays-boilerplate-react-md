@@ -1,28 +1,40 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { NavigationDrawer } from 'react-md'
+import { Route, Switch } from 'react-router-dom';
+import NavLink from './pages/NavLink';
 
-class App extends Component {
+import Home from './pages/Home';
+import Page1 from './pages/Page1';
+
+const navItems = [{
+  exact: true,
+  label: 'Home',
+  to: '/',
+  icon: 'home',
+}, {
+  label: 'Page 1',
+  to: '/page-1',
+  icon: 'bookmark',
+}];
+
+export default class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
+      <Route
+        render={({ location }) => (
+          <NavigationDrawer
+            drawerTitle="react-md with CRA"
+            toolbarTitle="Welcome to react-md"
+            navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
           >
-            Learn React
-          </a>
-        </header>
-      </div>
+            <Switch key={location.key}>
+              <Route exact path="/" location={location} component={Home} />
+              <Route path="/page-1" location={location} component={Page1} />
+            </Switch>
+          </NavigationDrawer>
+        )}
+      />
     );
   }
 }
-
-export default App;
